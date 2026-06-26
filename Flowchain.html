@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FlowChain MVP</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #172033;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0b1f3a, #0f766e);
+      color: white;
+      padding: 35px;
+      border-radius: 18px;
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      max-width: 760px;
+      line-height: 1.6;
+      opacity: 0.95;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 25px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 25px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      margin-bottom: 18px;
+      color: #0b1f3a;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 14px;
+      background: #0f766e;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #115e59;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .metric {
+      background: #eef6ff;
+      padding: 18px;
+      border-radius: 14px;
+      border-left: 5px solid #0f766e;
+    }
+
+    .metric span {
+      display: block;
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    .metric strong {
+      font-size: 22px;
+      color: #0b1f3a;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 14px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+      color: #475569;
+      font-size: 14px;
+    }
+
+    .status {
+      padding: 16px;
+      border-radius: 14px;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .warning {
+      background: #fff7ed;
+      color: #c2410c;
+    }
+
+    .safe {
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .integration-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .integration {
+      background: #f8fafc;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .note {
+      line-height: 1.6;
+      color: #475569;
+    }
+
+    @media (max-width: 900px) {
+      .grid,
+      .metrics,
+      .integration-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>FlowChain MVP</h1>
+      <p>
+        FlowChain helps importing SMEs reduce settlement friction and understand working-capital needs.
+        This prototype turns one purchase order into a settlement plan, VAT reserve, cash-gap calculation
+        and financing recommendation.
+      </p>
+    </header>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Purchase Order Input</h2>
+
+        <label>Supplier invoice amount (€)</label>
+        <input id="invoice" type="number" value="40000" />
+
+        <label>Transport cost (€)</label>
+        <input id="transport" type="number" value="2000" />
+
+        <label>Import duty (€)</label>
+        <input id="duty" type="number" value="1500" />
+
+        <label>VAT percentage (%)</label>
+        <input id="vat" type="number" value="21" />
+
+        <label>Expected sales revenue (€)</label>
+        <input id="sales" type="number" value="65000" />
+
+        <label>Current cash balance (€)</label>
+        <input id="cash" type="number" value="18000" />
+
+        <label>Sales period (days)</label>
+        <input id="period" type="number" value="90" />
+
+        <button onclick="generatePlan()">Generate FlowChain Plan</button>
+      </div>
+
+      <div>
+        <div class="card">
+          <h2>Key Figures</h2>
+
+          <div class="metrics">
+            <div class="metric">
+              <span>Total obligations</span>
+              <strong id="totalMetric">€52,635</strong>
+            </div>
+
+            <div class="metric">
+              <span>Cash gap</span>
+              <strong id="gapMetric">€34,635</strong>
+            </div>
+
+            <div class="metric">
+              <span>Financing advised</span>
+              <strong id="financeMetric">€34,635</strong>
+            </div>
+          </div>
+
+          <div id="statusBox" class="status warning">
+            Liquidity risk detected. Financing is recommended.
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Settlement Plan</h2>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Obligation</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Supplier payment</td>
+                <td id="supplierPayment">€40,000</td>
+              </tr>
+              <tr>
+                <td>Transport payment</td>
+                <td id="transportPayment">€2,000</td>
+              </tr>
+              <tr>
+                <td>Import duty</td>
+                <td id="dutyPayment">€1,500</td>
+              </tr>
+              <tr>
+                <td>VAT reserve</td>
+                <td id="vatReserve">€9,135</td>
+              </tr>
+              <tr>
+                <td><strong>Total obligations</strong></td>
+                <td id="totalObligations"><strong>€52,635</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h2>Working-Capital Analysis</h2>
+
+          <table>
+            <tbody>
+              <tr>
+                <td>Current cash balance</td>
+                <td id="cashBalance">€18,000</td>
+              </tr>
+              <tr>
+                <td>Projected cash gap</td>
+                <td id="cashGap">€34,635</td>
+              </tr>
+              <tr>
+                <td>Recommended financing amount</td>
+                <td id="recommendedFinance">€34,635</td>
+              </tr>
+              <tr>
+                <td>Estimated monthly repayment</td>
+                <td id="monthlyRepayment">€3,014</td>
+              </tr>
+              <tr>
+                <td>Expected sales revenue</td>
+                <td id="salesRevenue">€65,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Simulated External Integrations</h2>
+
+      <div class="integration-grid">
+        <div class="integration">
+          Open Banking API
+          <br />
+          <span class="badge">Simulated</span>
+        </div>
+
+        <div class="integration">
+          Supplier API
+          <br />
+          <span class="badge">Simulated</span>
+        </div>
+
+        <div class="integration">
+          Transport API
+          <br />
+          <span class="badge">Simulated</span>
+        </div>
+
+        <div class="integration">
+          Tax/Customs API
+          <br />
+          <span class="badge">Simulated</span>
+        </div>
+
+        <div class="integration">
+          FX Provider
+          <br />
+          <span class="badge">Simulated</span>
+        </div>
+
+        <div class="integration">
+          Financing Provider
+          <br />
+          <span class="badge">Requires partner/license</span>
+        </div>
+      </div>
+    </div>
+
+	<div class="card">
+  <h2>Implemented vs Simulated</h2>
+
+  <p class="note">
+    This MVP implements the core FlowChain logic: settlement planning, VAT reserve calculation,
+    cash-gap detection and financing recommendation. Real bank transfers, Open Banking connections,
+    supplier integrations, transport integrations, customs/tax filings, FX execution and loan approval
+    are not implemented. They are shown as simulated dependencies because they would require real
+    partners, API access, regulatory compliance and licensing.
+  </p>
+
+  <p class="note" style="margin-top: 12px;">
+    This MVP demonstrates the FlowChain concept and does not execute real payments, customs filings,
+    foreign exchange transactions or financing approvals.
+  </p>
+</div><div class="card">
+  <h2>Implemented vs Simulated</h2>
+
+  <p class="note">
+    This MVP implements the core FlowChain logic: settlement planning, VAT reserve calculation,
+    cash-gap detection and financing recommendation. Real bank transfers, Open Banking connections,
+    supplier integrations, transport integrations, customs/tax filings, FX execution and loan approval
+    are not implemented. They are shown as simulated dependencies because they would require real
+    partners, API access, regulatory compliance and licensing.
+  </p>
+
+  <p class="note" style="margin-top: 12px;">
+    This MVP demonstrates the FlowChain concept and does not execute real payments, customs filings,
+    foreign exchange transactions or financing approvals.
+  </p>
+</div><div class="card">
+  <div class="card">
+  <h2>Implemented vs Simulated</h2>
+
+  <p class="note">
+    This MVP implements the core FlowChain logic: settlement planning, VAT reserve calculation,
+    cash-gap detection and financing recommendation. Real bank transfers, Open Banking connections,
+    supplier integrations, transport integrations, customs/tax filings, FX execution and loan approval
+    are not implemented. They are shown as simulated dependencies because they would require real
+    partners, API access, regulatory compliance and licensing.
+  </p>
+
+  <p class="note" style="margin-top: 12px;">
+    This MVP demonstrates the FlowChain concept and does not execute real payments, customs filings,
+    foreign exchange transactions or financing approvals.
+  </p>
+</div>
+
+  </div>
+
+  <script>
+    function euro(value) {
+      return new Intl.NumberFormat("en-IE", {
+        style: "currency",
+        currency: "EUR",
+        maximumFractionDigits: 0
+      }).format(value);
+    }
+
+    function numberValue(id) {
+      return parseFloat(document.getElementById(id).value) || 0;
+    }
+
+    function generatePlan() {
+      const invoice = numberValue("invoice");
+      const transport = numberValue("transport");
+      const duty = numberValue("duty");
+      const vatPercentage = numberValue("vat");
+      const expectedSales = numberValue("sales");
+      const currentCash = numberValue("cash");
+
+      const vatReserve = (invoice + transport + duty) * (vatPercentage / 100);
+      const totalObligations = invoice + transport + duty + vatReserve;
+      const cashGap = totalObligations - currentCash;
+      const financingAmount = cashGap > 0 ? cashGap : 0;
+      const monthlyRepayment = financingAmount > 0 ? (financingAmount * 1.045) / 12 : 0;
+
+      document.getElementById("supplierPayment").textContent = euro(invoice);
+      document.getElementById("transportPayment").textContent = euro(transport);
+      document.getElementById("dutyPayment").textContent = euro(duty);
+      document.getElementById("vatReserve").textContent = euro(vatReserve);
+      document.getElementById("totalObligations").innerHTML = "<strong>" + euro(totalObligations) + "</strong>";
+
+      document.getElementById("totalMetric").textContent = euro(totalObligations);
+      document.getElementById("gapMetric").textContent = cashGap > 0 ? euro(cashGap) : "€0";
+      document.getElementById("financeMetric").textContent = euro(financingAmount);
+
+      document.getElementById("cashBalance").textContent = euro(currentCash);
+      document.getElementById("cashGap").textContent = cashGap > 0 ? euro(cashGap) : "No cash gap";
+      document.getElementById("recommendedFinance").textContent =
+        financingAmount > 0 ? euro(financingAmount) : "No financing needed";
+      document.getElementById("monthlyRepayment").textContent =
+        monthlyRepayment > 0 ? euro(monthlyRepayment) : "€0";
+      document.getElementById("salesRevenue").textContent = euro(expectedSales);
+
+      const statusBox = document.getElementById("statusBox");
+
+      if (cashGap > 0) {
+        statusBox.className = "status warning";
+        statusBox.textContent = "Liquidity risk detected. Financing is recommended.";
+      } else {
+        statusBox.className = "status safe";
+        statusBox.textContent = "No immediate financing needed. Current cash covers obligations.";
+      }
+    }
+
+    generatePlan();
+  </script>
+</body>
+</html>
+```
