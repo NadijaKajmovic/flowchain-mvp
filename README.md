@@ -20,3 +20,7 @@ The application allows users to:
 
 # Status
 In development.
+
+# Author
+Name: Nadija Kajmovic
+Student number: 618255nk
