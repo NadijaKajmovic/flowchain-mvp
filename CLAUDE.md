@@ -1,20 +1,31 @@
-Read prompt.md and CLAUDE.md in this repository.
-Create flowchain.html.
-After building the application:
-1. Test all calculations and fix any errors.
-2. Improve the UI so it feels like a FinTech investor demo rather than a school calculator.
-3. Add a section called "Implemented vs Simulated".
+Project goal:
+- Build a single-page FinTech MVP called FlowChain.
 
-The following integrations must be clearly marked as simulated:
-- Open Banking API
-- Supplier API
-- Transport API
-- Tax/Customs API
-- FX Provider
-Do not present simulated integrations as fully implemented solutions.
+Architecture constraints: 
+- Single HTML file only: flowchain.html
+- Inline CSS
+- Inline JavaScript
+- No backend
+- No database
+- o real APIs
+- No external libraries
 
-The MVP should focus on the implemented functionality:
-- Settlement plan generation
+Features
+- Settlement plan
 - VAT reserve calculation
 - Cash-gap detection
 - Financing recommendation
+- Simulated integrations
+
+Verification
+Use:
+- Invoice amount = 40000
+- Transport cost = 2000
+- Import duty = 1500
+- VAT = 21
+- Current cash balance = 18000
+
+Expected:
+- VAT reserve = 9135
+- Total obligations = 52635
+- Cash gap = 34635
