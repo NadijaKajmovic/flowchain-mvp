@@ -18,8 +18,5 @@ The application allows users to:
 - `chat_log.md` – Development history and AI collaboration log
 - `README.md` – Project overview
 
-# Status
-In development.
-
 # Author
 Name: Nadija Kajmovic (618255nk)
