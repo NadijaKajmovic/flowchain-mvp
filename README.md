@@ -22,5 +22,4 @@ The application allows users to:
 In development.
 
 # Author
-Name: Nadija Kajmovic
-Student number: 618255nk
+Name: Nadija Kajmovic (618255nk)
