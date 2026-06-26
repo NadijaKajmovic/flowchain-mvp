@@ -1,22 +1,20 @@
-# flowchain-mvp
-FinTech: Business Models and Application (BM26BAM) Assignment 2
+# FlowChain MVP
 
-# Description
-FlowChain is a FinTech MVP that helps importing SMEs reduce settlement friction and understand working-capital needs.
-The application allows users to:
+FinTech: Business Models and Applications (BM26BAM) Assignment 2
 
-- Enter supplier invoice details
-- Generate a settlement plan
-- Calculate VAT reserves
-- Detect projected cash gaps
-- Receive financing recommendations
+FlowChain helps importing SMEs reduce settlement friction and understand working-capital needs.
 
-# Repository structure
-- `prompt.md` – Product requirements
-- `CLAUDE.md` – Constraints and implementation guidance
-- `flowchain.html` – Single-file MVP application
-- `chat_log.md` – Development history and AI collaboration log
-- `README.md` – Project overview
+Built with HTML, CSS and JavaScript in a single file.
 
-# Author
-Name: Nadija Kajmovic (618255nk)
+Main features:
+- Settlement plan generation
+- VAT reserve calculation
+- Cash-gap detection
+- Financing recommendation
+- Simulated integrations
+
+Files:
+- prompt.md
+- CLAUDE.md
+- flowchain.html
+- chat_log.md
